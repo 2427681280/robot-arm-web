@@ -1,0 +1,21 @@
+{
+  "name": "robot-arm-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "网页版六自由度机械臂：鼠标拖拽控制（FK/IK），Three.js + URDF",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.185.1",
+    "urdf-loader": "^0.13.1"
+  },
+  "devDependencies": {
+    "@types/three": "^0.185.4",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.1"
+  }
+}
