@@ -50,22 +50,20 @@ async function main(): Promise<void> {
   controls.dampingFactor = 0.08
   controls.minDistance = 0.3
   controls.maxDistance = 8
-  // 左键拖拽机械臂关节、中键旋转视角、右键无功能、滚轮缩放
+  // 左键拖拽机械臂关节、中键旋转视角、右键平移、滚轮缩放
   controls.mouseButtons = {
     LEFT: THREE.MOUSE.ROTATE, // 实际被下方捕获监听禁用（专用于拖拽关节）
     MIDDLE: THREE.MOUSE.ROTATE,
-    RIGHT: THREE.MOUSE.ROTATE, // 实际被下方捕获监听拦截（无功能）
+    RIGHT: THREE.MOUSE.PAN,
   }
 
   const dom = renderer.domElement
-  // 捕获阶段：左键禁用相机控制（留给拖拽关节）；右键拦截（无功能）
+  // 捕获阶段：左键禁用相机控制（留给拖拽关节）
   dom.addEventListener(
     'pointerdown',
     (e: PointerEvent) => {
       if (e.button === 0) {
         controls.enabled = false
-      } else if (e.button === 2) {
-        e.stopPropagation()
       }
     },
     { capture: true },
@@ -99,7 +97,7 @@ async function main(): Promise<void> {
   // 绕 X 轴旋转 -90°，把 ROS 的 z 轴向上纠正为 Three.js 的 y 轴向上，使基座垂直于地面
   robot.rotation.x = -Math.PI / 2
   robot.updateMatrixWorld(true)
-  hint.textContent = '🖱️ 左键拖拽关节 · 中键旋转视角 · 滚轮缩放'
+  hint.textContent = '🖱️ 左键拖拽关节 · 中键旋转视角 · 右键平移 · 滚轮缩放'
 
   // ---------- 关节模型与运动学 ----------
   const arm = new ArmModel(robot)
@@ -261,7 +259,7 @@ async function main(): Promise<void> {
       } else {
         wp.stop()
         drag.enabled = true
-        hint.textContent = '🖱️ 左键拖拽关节 · 中键旋转视角 · 滚轮缩放'
+        hint.textContent = '🖱️ 左键拖拽关节 · 中键旋转视角 · 右键平移 · 滚轮缩放'
       }
     },
     onRecorderAction: (action) => {
@@ -277,7 +275,7 @@ async function main(): Promise<void> {
       } else {
         recorder.stopAll()
         drag.enabled = true
-        hint.textContent = '🖱️ 左键拖拽关节 · 中键旋转视角 · 滚轮缩放'
+        hint.textContent = '🖱️ 左键拖拽关节 · 中键旋转视角 · 右键平移 · 滚轮缩放'
       }
     },
   })
@@ -295,7 +293,7 @@ async function main(): Promise<void> {
     panel.setWaypointState(playing, count)
     if (!playing) {
       drag.enabled = true
-      hint.textContent = '🖱️ 左键拖拽关节 · 中键旋转视角 · 滚轮缩放'
+      hint.textContent = '🖱️ 左键拖拽关节 · 中键旋转视角 · 右键平移 · 滚轮缩放'
     }
   })
   // 启动时尝试加载上次保存的点位
