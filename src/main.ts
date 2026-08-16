@@ -11,7 +11,8 @@ import { JointDragControls } from './interaction/JointDragControls'
 import { TargetDrag } from './interaction/TargetDrag'
 import { Panel, type Mode } from './ui/Panel'
 
-const URDF_URL = '/ur_description/urdf/ur5e.urdf'
+const BASE = import.meta.env.BASE_URL // '/'（本地）或 '/robot-arm-web/'（GitHub Pages）
+const URDF_URL = `${BASE}ur_description/urdf/ur5e.urdf`
 
 async function main(): Promise<void> {
   const app = document.getElementById('app')!
@@ -79,7 +80,7 @@ async function main(): Promise<void> {
 
   // ---------- 加载 URDF ----------
   const loader = new URDFLoader()
-  loader.packages = { ur_description: '/ur_description' }
+  loader.packages = { ur_description: `${BASE}ur_description` }
   loader.parseCollision = false // collision 目录为空，仅渲染 visual
   hint.textContent = '⏳ 正在加载机械臂模型…'
 
